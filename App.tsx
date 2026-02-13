@@ -1,24 +1,39 @@
+import { useState } from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, TextInput, View, Image, Pressable, ScrollView} from 'react-native';
+import { StyleSheet, Text, View, Switch} from 'react-native';
+import { ThemeContext } from './src/context/ThemeContext';
+import { myColors } from './src/styles/Colors';
+import Button from './src/components/Button';
+import MyKeyboard from './src/components/MyKeyboard';
+import { SafeAreaView } from 'react-native-safe-area-context';
 
 export default function App() {
+
+  const [theme, setTheme] = useState<{ ligth: boolean; dark: boolean; }>({ ligth: true, dark: false });
+
   return (
-    <View style={styles.container}>
-      <Text>Comienzo de calculadora</Text>
+    <ThemeContext.Provider value={theme}>
+    <SafeAreaView style={theme.ligth ? styles.container : [styles.container, {backgroundColor: '#000000'}]}>
 
-      <Image source={require('./assets/icon.png')} style={styles.image}></Image>
-
-      <TextInput style={styles.input}></TextInput>
       <StatusBar style="auto" />
 
-      <Pressable style={styles.button}>
-        <Text style={{color: 'white'}}>Calcular</Text>
-      </Pressable>
+      <MyKeyboard />
 
 
 
-    </View>
+      { /* <Switch
 
+        value={theme.ligth}
+        onValueChange={() => setTheme({ ligth: !theme.ligth, dark: !theme.dark })}
+
+      /> */}
+
+      
+
+
+
+    </SafeAreaView>
+    </ThemeContext.Provider>
     
   );
 }
@@ -26,27 +41,8 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: myColors.ligth,
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-  input: {
-    height: 40,
-    borderColor: 'gray',
-    borderWidth: 1,
-    width: '80%',
-    marginTop: 20,
-    paddingHorizontal: 10,
-  },
-  button: {
-    backgroundColor: '#007BFF',
-    padding: 10,
-    borderRadius: 5,
-    marginTop: 20,
-  },
-  image: {
-    width: 100,
-    height: 100,
-    marginTop: 20,
+    justifyContent: 'flex-start',
   }
 });
